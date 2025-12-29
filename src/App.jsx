@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import ProductGrid from './ProductTable';
 import PageTitle from './PageTitle';
@@ -14,12 +14,10 @@ function App() {
     }).catch((err) => console.error(err))
   },[]);
 
-  const totalProductCount = useMemo(() => productList.length, [productList]);
-
   return (
     <div className='container'>
       <PageTitle />
-      <Pagination productCount={totalProductCount} productList={productList} setActiveProductList={setActiveProductList} />
+      <Pagination productList={productList} setActiveProductList={setActiveProductList} />
       <ProductGrid productList={activeProductList} />
     </div>
   )
