@@ -3,21 +3,37 @@ import './App.css'
 import ProductGrid from './ProductTable';
 import PageTitle from './PageTitle';
 import Pagination from './Pagination';
+import { Filter } from './Filter';
 
 function App() {
   const [productList, setProductList] = useState([]);
+  const [filteredProductList, setFilteredProductList] = useState([]);
   const [activeProductList, setActiveProductList] = useState([]);
 
   useEffect(()=>{
-    fetch("http://localhost:4000/api/products").then((res) => res.json()).then((res)=>{
-      setProductList(res);
-    }).catch((err) => console.error(err))
+    fetch("http://localhost:4000/api/products")
+      .then((res) => res.json())
+      .then((res)=>{
+        // Full list from API
+        setProductList(res);
+        // Default: no filter applied, so filtered list is the full list
+        setFilteredProductList(res);
+      })
+      .catch((err) => console.error(err))
   },[]);
 
   return (
     <div className='container'>
       <PageTitle />
-      <Pagination productList={productList} setActiveProductList={setActiveProductList} />
+      <Filter
+        productList={productList}
+        setFilteredProductList={setFilteredProductList}
+      />
+      {/* Paginate the currently filtered list */}
+      <Pagination
+        productList={filteredProductList}
+        setActiveProductList={setActiveProductList}
+      />
       <ProductGrid productList={activeProductList} />
     </div>
   )
